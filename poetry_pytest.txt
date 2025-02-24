@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.9, pytest-8.3.4, pluggy-1.5.0 -- /home/user/.cache/pypoetry/virtualenvs/proto-island-jz_o8MaH-py3.12/bin/python
+cachedir: .pytest_cache
+rootdir: /home/user/Dev/proto_island
+configfile: pyproject.toml
+testpaths: tests
+plugins: cov-6.0.0
+collecting ... collected 21 items
+
+tests/test_cave.py::test_cave_generator_initialization PASSED            [  4%]
+tests/test_cave.py::test_cave_generation PASSED                          [  9%]
+tests/test_cave.py::test_cave_connectivity PASSED                        [ 14%]
+tests/test_cave.py::test_cave_integration PASSED                         [ 19%]
+tests/test_cave.py::test_cave_entrance_generation PASSED                 [ 23%]
+tests/test_lighting.py::test_lighting_system_initialization PASSED       [ 28%]
+tests/test_lighting.py::test_natural_light_day_cycle PASSED              [ 33%]
+tests/test_lighting.py::test_surface_reflectivity PASSED                 [ 38%]
+tests/test_lighting.py::test_light_level_bounds PASSED                   [ 42%]
+tests/test_lighting.py::test_get_light_level PASSED                      [ 47%]
+tests/test_map.py::test_map_initialization PASSED                        [ 52%]
+tests/test_map.py::test_terrain_types PASSED                             [ 57%]
+tests/test_map.py::test_map_bounds PASSED                                [ 61%]
+tests/test_map.py::test_terrain_generation PASSED                        [ 66%]
+tests/test_map.py::test_terrain_features PASSED                          [ 71%]
+tests/test_map.py::test_lighting_integration PASSED                      [ 76%]
+tests/test_map.py::test_terrain_lighting_interaction PASSED              [ 80%]
+tests/test_map.py::TestZLevels::test_z_level_initialization PASSED       [ 85%]
+tests/test_map.py::TestZLevels::test_z_level_navigation PASSED           [ 90%]
+tests/test_map.py::TestZLevels::test_z_level_state_persistence PASSED    [ 95%]
+tests/test_map.py::TestZLevels::test_z_level_connectivity PASSED         [100%]
+
+---------- coverage: platform linux, python 3.12.9-final-0 -----------
+Name                           Stmts   Miss  Cover
+--------------------------------------------------
+src/proto_island/__init__.py       0      0   100%
+src/proto_island/cave.py          80      2    98%
+src/proto_island/lighting.py      49      0   100%
+src/proto_island/map.py          172     13    92%
+--------------------------------------------------
+TOTAL                            301     15    95%
+
+
+============================= 21 passed in 11.53s ==============================

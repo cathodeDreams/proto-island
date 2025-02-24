@@ -1,0 +1,42 @@
+[project]
+name = "proto-island"
+version = "0.1.0"
+description = "An ASCII-based island exploration game with dynamic lighting and terrain"
+authors = [
+    {name = "cathodeDreams",email = "cathodedream240@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "tcod>=16.1.1",
+    "numpy>=1.26.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "scipy>=1.12.0"
+]
+
+[tool.poetry]
+packages = [{include = "proto_island", from = "src"}]
+name = "proto-island"
+version = "0.1.0"
+description = "A prototype for an island exploration game"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "^2.2.3"
+tcod = "^16.2.3"
+scipy = "^1.12.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=proto_island"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

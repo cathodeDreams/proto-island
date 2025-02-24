@@ -1,0 +1,12 @@
+cffi              1.17.1 Foreign Function Interface for Python calling C code.
+coverage          7.6.12 Code coverage measurement for Python
+iniconfig         2.0.0  brain-dead simple config-ini parsing
+numpy             2.2.3  Fundamental package for array computing in Python
+packaging         24.2   Core utilities for Python packages
+pluggy            1.5.0  plugin and hook calling mechanisms for python
+pycparser         2.22   C parser in Python
+pytest            8.3.4  pytest: simple powerful testing with Python
+pytest-cov        6.0.0  Pytest plugin for measuring coverage.
+scipy             1.15.2 Fundamental algorithms for scientific computing in...
+tcod              16.2.3 The official Python port of libtcod.
+typing-extensions 4.12.2 Backported and Experimental Type Hints for Python ...

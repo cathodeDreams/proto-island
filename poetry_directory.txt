@@ -1,0 +1,221 @@
+.
+├── docs
+│   ├── island-design-doc.md
+│   ├── project_status.md
+│   ├── tcod_performance.md
+│   ├── tcod_reference.md
+│   └── tcod_testing_patterns.md
+├── poetry_directory.txt
+├── poetry_env_info.txt
+├── poetry.lock
+├── poetry_pytest.txt
+├── poetry.sh
+├── poetry_show.txt
+├── pyproject.toml
+├── python-tcod
+│   ├── build_libtcod.py
+│   ├── build_sdl.py
+│   ├── CHANGELOG.md
+│   ├── CONTRIBUTING.md
+│   ├── docs
+│   │   ├── changelog.rst
+│   │   ├── conf.py
+│   │   ├── epilog.rst
+│   │   ├── faq.rst
+│   │   ├── glossary.rst
+│   │   ├── index.rst
+│   │   ├── installation.rst
+│   │   ├── libtcodpy.rst
+│   │   ├── make.bat
+│   │   ├── Makefile
+│   │   ├── prolog.rst
+│   │   ├── requirements.txt
+│   │   ├── sdl
+│   │   │   ├── audio.rst
+│   │   │   ├── joystick.rst
+│   │   │   ├── mouse.rst
+│   │   │   ├── render.rst
+│   │   │   └── video.rst
+│   │   ├── _static
+│   │   │   └── css
+│   │   │       └── custom.css
+│   │   ├── tcod
+│   │   │   ├── bsp.rst
+│   │   │   ├── charmap-reference.rst
+│   │   │   ├── console.rst
+│   │   │   ├── context.rst
+│   │   │   ├── event.rst
+│   │   │   ├── getting-started.rst
+│   │   │   ├── image.rst
+│   │   │   ├── los.rst
+│   │   │   ├── map.rst
+│   │   │   ├── noise.rst
+│   │   │   ├── path.rst
+│   │   │   ├── random.rst
+│   │   │   ├── render.rst
+│   │   │   └── tileset.rst
+│   │   └── tutorial
+│   │       ├── index.rst
+│   │       ├── notice.rst
+│   │       ├── part-00.rst
+│   │       ├── part-01.rst
+│   │       ├── part-02.rst
+│   │       └── part-03.rst
+│   ├── examples
+│   │   ├── audio_tone.py
+│   │   ├── cavegen.py
+│   │   ├── DejaVuSerif.ttf
+│   │   ├── distribution
+│   │   │   ├── cx_Freeze
+│   │   │   │   ├── data
+│   │   │   │   │   └── terminal8x8_gs_ro.png
+│   │   │   │   ├── main.py
+│   │   │   │   ├── README.rst
+│   │   │   │   ├── requirements.txt
+│   │   │   │   └── setup.py
+│   │   │   └── PyInstaller
+│   │   │       ├── data
+│   │   │       │   └── terminal8x8_gs_ro.png
+│   │   │       ├── icon.ico
+│   │   │       ├── main.py
+│   │   │       ├── README.rst
+│   │   │       └── requirements.txt
+│   │   ├── eventget.py
+│   │   ├── framerate.py
+│   │   ├── README.md
+│   │   ├── samples_libtcodpy.py
+│   │   ├── samples_tcod.py
+│   │   ├── sdl-hello-world.py
+│   │   ├── termbox
+│   │   │   ├── README.md
+│   │   │   ├── termbox.py
+│   │   │   └── termboxtest.py
+│   │   ├── thread_jobs.py
+│   │   ├── ttf.py
+│   │   └── VeraMono.ttf
+│   ├── fonts
+│   │   ├── libtcod
+│   │   │   ├── dejavu10x10_gs_tc.png
+│   │   │   ├── dejavu12x12_gs_tc.png
+│   │   │   ├── dejavu16x16_gs_tc.png
+│   │   │   ├── dejavu8x8_gs_tc.png
+│   │   │   ├── dejavu_wide12x12_gs_tc.png
+│   │   │   ├── dejavu_wide16x16_gs_tc.png
+│   │   │   ├── README.txt
+│   │   │   ├── terminal10x10_gs_tc.png
+│   │   │   ├── terminal10x16_gs_ro.png
+│   │   │   ├── terminal10x16_gs_tc.png
+│   │   │   ├── terminal10x18_gs_ro.png
+│   │   │   ├── terminal12x12_gs_ro.png
+│   │   │   ├── terminal16x16_gs_ro.png
+│   │   │   ├── terminal7x7_gs_tc.png
+│   │   │   ├── terminal8x12_gs_ro.png
+│   │   │   ├── terminal8x12_gs_tc.png
+│   │   │   ├── terminal8x14_gs_ro.png
+│   │   │   ├── terminal8x8_aa_ro.png
+│   │   │   ├── terminal8x8_aa_tc.png
+│   │   │   ├── terminal8x8_gs_ro.png
+│   │   │   └── terminal8x8_gs_tc.png
+│   │   ├── README.md
+│   │   └── X11
+│   │       ├── README.md
+│   │       └── ucs-fonts.7z
+│   ├── libtcod
+│   ├── libtcodpy.py
+│   ├── LICENSE.txt
+│   ├── MANIFEST.in
+│   ├── pyproject.toml
+│   ├── README.rst
+│   ├── requirements.txt
+│   ├── scripts
+│   │   ├── generate_charmap_table.py
+│   │   ├── get_release_description.py
+│   │   ├── README.md
+│   │   └── tag_release.py
+│   ├── setup.py
+│   ├── tcod
+│   │   ├── bsp.py
+│   │   ├── cdef.h
+│   │   ├── cffi.h
+│   │   ├── cffi.py
+│   │   ├── color.py
+│   │   ├── console.py
+│   │   ├── constants.py
+│   │   ├── context.py
+│   │   ├── event_constants.py
+│   │   ├── event.py
+│   │   ├── image.py
+│   │   ├── __init__.py
+│   │   ├── _internal.py
+│   │   ├── libtcodpy.py
+│   │   ├── los.py
+│   │   ├── map.py
+│   │   ├── noise.c
+│   │   ├── noise.h
+│   │   ├── noise.py
+│   │   ├── path.c
+│   │   ├── path.h
+│   │   ├── path.py
+│   │   ├── __pyinstaller
+│   │   │   ├── hook-tcod.py
+│   │   │   └── __init__.py
+│   │   ├── py.typed
+│   │   ├── random.h
+│   │   ├── random.py
+│   │   ├── render.py
+│   │   ├── sdl
+│   │   │   ├── audio.py
+│   │   │   ├── __init__.py
+│   │   │   ├── _internal.py
+│   │   │   ├── joystick.py
+│   │   │   ├── mouse.py
+│   │   │   ├── render.py
+│   │   │   ├── sys.py
+│   │   │   └── video.py
+│   │   ├── tcod.c
+│   │   ├── tcod.h
+│   │   ├── tcod.py
+│   │   ├── tdl.c
+│   │   ├── tdl.h
+│   │   └── tileset.py
+│   ├── tests
+│   │   ├── conftest.py
+│   │   ├── data
+│   │   │   ├── random_v13.pkl
+│   │   │   └── README.md
+│   │   ├── __init__.py
+│   │   ├── test_console.py
+│   │   ├── test_deprecated.py
+│   │   ├── test_libtcodpy.py
+│   │   ├── test_noise.py
+│   │   ├── test_parser.py
+│   │   ├── test_random.py
+│   │   ├── test_sdl_audio.py
+│   │   ├── test_sdl.py
+│   │   ├── test_tcod.py
+│   │   └── test_tileset.py
+│   └── tox.ini
+├── README.md
+├── src
+│   └── proto_island
+│       ├── cave.py
+│       ├── __init__.py
+│       ├── lighting.py
+│       ├── map.py
+│       └── __pycache__
+│           ├── cave.cpython-312.pyc
+│           ├── __init__.cpython-312.pyc
+│           ├── lighting.cpython-312.pyc
+│           └── map.cpython-312.pyc
+└── tests
+    ├── __init__.py
+    ├── __pycache__
+    │   ├── __init__.cpython-312.pyc
+    │   ├── test_cave.cpython-312-pytest-8.3.4.pyc
+    │   ├── test_lighting.cpython-312-pytest-8.3.4.pyc
+    │   └── test_map.cpython-312-pytest-8.3.4.pyc
+    ├── test_cave.py
+    ├── test_lighting.py
+    └── test_map.py
+
+31 directories, 188 files
