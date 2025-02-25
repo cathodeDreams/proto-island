@@ -1,9 +1,9 @@
 # Proto Island Project Status
 
 ## Current Status
-**Last Updated:** March 2, 2024
+**Last Updated:** Tue Feb 25 10:35:22 AM EST 2025
 **Project Stage:** Core Systems Development
-**Current Focus:** Structure Generation Implementation
+**Current Focus:** Advanced Game Systems
 
 ## Implemented Systems
 
@@ -49,7 +49,7 @@ Currently implemented terrain types:
 - [x] Time-based lighting variations
 - [x] Additive light combination
 - [x] Weather impact on lighting
-- [ ] Artificial light sources
+- [x] Artificial light sources
 
 #### Lighting Parameters
 - Day cycle: 6:00-18:00
@@ -75,8 +75,8 @@ Currently implemented terrain types:
 - Underground: z<0
 - Transition types:
   - Cave entrances (implemented)
-  - Stairs (pending)
-  - Elevators (pending)
+  - Stairs (implemented)
+  - Ladders (implemented)
   - Natural formations (pending)
 
 ### 5. Cave Generation System
@@ -114,7 +114,27 @@ Currently implemented terrain types:
 - Star count: 100 background stars plus constellations
 - Constellation count: 12 dynamically generated patterns
 
-### 7. Testing Framework
+### 7. Structure Generation System
+- [x] Building placement
+- [x] Interior generation using BSP
+- [x] Interior/exterior transitions
+- [x] Structure connectivity
+- [x] Environmental integration
+- [x] Artificial light sources
+- [x] Different structure types
+- [x] Multi-floor buildings
+
+#### Structure Generation Parameters
+- Building types: House, Shop, Temple, Workshop, Storage
+- Minimum room size: 3x3 tiles
+- BSP split chance: 0.6-0.8 (varies by building type)
+- Light sources: Each room + entrances + staircases
+- Light intensity: 0.6 (rooms), 0.7 (stairs), 0.8 (entrances)
+- Light radius: 8 tiles (rooms), 9 tiles (stairs), 10 tiles (entrances)
+- Floor count: 1-3 floors depending on building type
+- Vertical connection types: Stairs and ladders
+
+### 8. Testing Framework
 - [x] Unit tests for map initialization
 - [x] Terrain type validation
 - [x] Bounds checking tests
@@ -124,15 +144,17 @@ Currently implemented terrain types:
 - [x] Z-level system validation
 - [x] Cave generation validation
 - [x] Time system validation
-- [x] Current test coverage: 98%
+- [x] Structure generation validation
+- [x] Multi-floor building validation
+- [x] Current test coverage: 95%
 
 ## Pending Implementation
 
-### 1. Structure Generation (Current Priority)
-- [ ] Building placement
-- [ ] Interior/exterior transitions
-- [ ] Structure connectivity
-- [ ] Environmental integration
+### 1. Advanced Game Systems (Current Priority)
+- [ ] Character and NPC system
+- [ ] Inventory management
+- [ ] Quest system
+- [ ] Dialogue system
 
 ## Technical Implementation Details
 
@@ -219,6 +241,23 @@ CaveGenerator
     ├── generate(width, height, seed)
     ├── _apply_automata_rules(cave)
     └── _ensure_connectivity(cave, rng)
+
+StructureGenerator
+├── Properties
+│   ├── width: int
+│   └── height: int
+└── Public Methods
+    ├── is_buildable(game_map, x, y, width, height)
+    ├── find_buildable_area(game_map, min_width, min_height, max_attempts, rng)
+    ├── generate_building(x, y, width, height, min_room_size, structure_type, seed)
+    ├── generate_multi_floor_building(x, y, width, height, floors, min_room_size, structure_type, seed)
+    ├── _generate_floor_layout(x, y, width, height, min_room_size, structure_type, seed)
+    ├── _generate_vertical_connections(building, rng)
+    ├── generate_buildings(game_map, count, min_size, seed)
+    ├── add_buildings_to_map(game_map, count, seed)
+    ├── _add_multi_floor_building_to_map(game_map, building)
+    ├── add_artificial_lights(game_map)
+    └── _add_point_light(lighting, x, y, intensity, radius)
 ```
 
 ### Performance Optimizations
@@ -232,25 +271,25 @@ CaveGenerator
 8. Optimized cave connectivity using sampling
 9. Deterministic randomness for star positions
 10. Efficient weather transitions
+11. Optimized light propagation for multi-floor buildings
 
 ## Next Steps
 
 ### Immediate Priorities
-1. Implement structure system
-   - Design building placement algorithm
-   - Plan interior generation
-   - Create transition system
-   - Integrate with existing terrain
+1. Implement character and NPC system
+   - Design base character class
+   - Create NPC behavior system
+   - Implement player-NPC interactions
 
-2. Enhance cave system
-   - Add underground water bodies
-   - Implement cave-specific lighting
-   - Add natural formations
+2. Develop inventory management system
+   - Item representation
+   - Inventory UI
+   - Item interactions
 
-3. Complete lighting system
-   - Add artificial light sources
-   - Implement light propagation algorithms
-   - Add dynamic shadows
+3. Quest system foundation
+   - Quest state management
+   - Objective tracking
+   - Reward distribution
 
 ### Future Considerations
 1. Performance optimization for larger maps
