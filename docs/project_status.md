@@ -1,7 +1,7 @@
 # Proto Island Project Status
 
 ## Current Status
-**Last Updated:** Tue Feb 25 10:35:22 AM EST 2025
+**Last Updated:** Tue Feb 25 01:23:43 AM EST 2025
 **Project Stage:** Core Systems Development
 **Current Focus:** Advanced Game Systems
 
@@ -134,7 +134,62 @@ Currently implemented terrain types:
 - Floor count: 1-3 floors depending on building type
 - Vertical connection types: Stairs and ladders
 
-### 8. Testing Framework
+### 8. Character and NPC System
+- [x] Base character class
+- [x] Player character implementation
+- [x] NPC character types
+- [x] Character movement with terrain interaction
+- [x] Z-level transitions for characters
+- [x] Field of view calculation
+- [x] NPC states and behavior system
+- [x] NPC-player interaction
+- [x] Character management system
+
+#### Character System Parameters
+- Character types: Player, NPC
+- NPC types: Villager, Merchant, Guard, Animal
+- NPC states: Idle, Wander, Follow, Flee, Talk
+- Default health: 100
+- Field of view radius: 8 tiles
+- NPC interaction range: 5 tiles
+- Movement: Cardinal and diagonal directions
+
+### 9. Inventory System
+- [x] Item representation with properties
+- [x] Item type enumeration
+- [x] Item stacking functionality
+- [x] Weight-based inventory capacity
+- [x] Item addition and removal
+- [x] Stackable vs. non-stackable items
+- [x] Integration with character system
+- [x] Unit-based weight calculation
+
+#### Inventory System Parameters
+- Item types: General, Weapon, Armor, Consumable, Quest, Key
+- Default character inventory capacity: 50 units
+- Item properties: name, type, weight, value, stackable, quantity
+- Special properties: Weapons and quest items non-stackable by default
+- Dynamic property system via kwargs
+
+### 10. Quest System
+- [x] Quest state management
+- [x] Multiple quest types
+- [x] Objective-based design
+- [x] Reward distribution
+- [x] Quest tracking functionality
+- [x] Integration with character system
+- [x] Integration with inventory system
+- [x] Complex multi-objective quests
+
+#### Quest System Parameters
+- Quest states: Inactive, Active, Completed, Failed
+- Objective types: Collect, Kill, Location, Escort, Deliver, Talk
+- Quest types: Gather, Kill, Explore, Delivery, Escort, Dialogue
+- Reward types: Gold, XP, Items
+- NPC-driven quest assignment
+- Dynamic objective tracking
+
+### 11. Testing Framework
 - [x] Unit tests for map initialization
 - [x] Terrain type validation
 - [x] Bounds checking tests
@@ -146,14 +201,17 @@ Currently implemented terrain types:
 - [x] Time system validation
 - [x] Structure generation validation
 - [x] Multi-floor building validation
-- [x] Current test coverage: 95%
+- [x] Character system validation
+- [x] Inventory system validation
+- [x] Quest system validation
+- [x] Current test coverage: 94%
 
 ## Pending Implementation
 
 ### 1. Advanced Game Systems (Current Priority)
-- [ ] Character and NPC system
-- [ ] Inventory management
-- [ ] Quest system
+- [x] Character and NPC system
+- [x] Inventory management
+- [x] Quest system
 - [ ] Dialogue system
 
 ## Technical Implementation Details
@@ -258,6 +316,117 @@ StructureGenerator
     ├── _add_multi_floor_building_to_map(game_map, building)
     ├── add_artificial_lights(game_map)
     └── _add_point_light(lighting, x, y, intensity, radius)
+
+Character
+├── Properties
+│   ├── x: int
+│   ├── y: int
+│   ├── z: int
+│   ├── char_type: CharacterType
+│   ├── health: int
+│   ├── max_health: int
+│   └── inventory: Inventory
+└── Public Methods
+    ├── move(game_map, dx, dy)
+    ├── transition_z_level(game_map)
+    └── _is_terrain_walkable(terrain_type)
+
+Player (extends Character)
+├── Properties
+│   └── fov_radius: int
+└── Public Methods
+    └── calculate_fov(game_map)
+
+NPC (extends Character)
+├── Properties
+│   ├── npc_type: NPCType
+│   ├── state: NPCState
+│   ├── target: Optional[Character]
+│   └── name: str
+└── Public Methods
+    ├── update(game_map, player)
+    └── _is_player_nearby(player)
+
+CharacterManager
+├── Properties
+│   ├── player: Optional[Player]
+│   └── npcs: List[NPC]
+└── Public Methods
+    ├── set_player(player)
+    ├── add_npc(npc)
+    ├── update(game_map)
+    └── get_characters_at_location(x, y, z)
+
+Inventory
+├── Properties
+│   ├── capacity: float
+│   ├── current_weight: float
+│   └── items: List[Item]
+└── Public Methods
+    ├── add_item(item)
+    ├── remove_item(item_name, quantity)
+    └── get_item(item_name)
+
+Item
+├── Properties
+│   ├── name: str
+│   ├── item_type: ItemType
+│   ├── unit_weight: float
+│   ├── weight: float
+│   ├── value: int
+│   ├── stackable: bool
+│   └── quantity: int
+└── Public Methods
+    └── stack_with(other)
+
+QuestObjective
+├── Properties
+│   ├── objective_type: QuestObjectiveType
+│   ├── description: str
+│   ├── target: str
+│   ├── required_amount: int
+│   ├── current_amount: int
+│   └── is_completed: bool
+└── Public Methods
+    ├── update_progress(amount)
+    └── reset()
+
+Quest
+├── Properties
+│   ├── id: str
+│   ├── title: str
+│   ├── description: str
+│   ├── quest_type: QuestType
+│   ├── quest_giver_id: str
+│   ├── state: QuestState
+│   ├── objectives: List[QuestObjective]
+│   ├── rewards: Dict[str, Any]
+│   └── can_fail: bool
+└── Public Methods
+    ├── add_objective(objective)
+    ├── add_reward(reward_type, value)
+    ├── activate()
+    ├── complete()
+    ├── fail()
+    ├── set_state(new_state)
+    └── is_complete (property)
+
+QuestManager
+├── Properties
+│   └── quests: Dict[str, Quest]
+└── Public Methods
+    ├── add_quest(quest)
+    ├── activate_quest(quest_id)
+    ├── complete_quest(quest_id)
+    ├── fail_quest(quest_id)
+    ├── update_quest_objectives(objective_type, target, amount)
+    ├── get_completable_quests()
+    ├── get_quests_by_state(state)
+    ├── get_quests_from_npc(npc_id)
+    ├── available_quests (property)
+    ├── active_quests (property)
+    ├── completed_quests (property)
+    └── failed_quests (property)
 ```
 
 ### Performance Optimizations
@@ -272,24 +441,19 @@ StructureGenerator
 9. Deterministic randomness for star positions
 10. Efficient weather transitions
 11. Optimized light propagation for multi-floor buildings
+12. Unit-based weight calculation for efficient inventory management
+13. UUID-based quest identification for efficient lookups
 
 ## Next Steps
 
 ### Immediate Priorities
-1. Implement character and NPC system
-   - Design base character class
-   - Create NPC behavior system
-   - Implement player-NPC interactions
-
-2. Develop inventory management system
-   - Item representation
-   - Inventory UI
-   - Item interactions
-
-3. Quest system foundation
-   - Quest state management
-   - Objective tracking
-   - Reward distribution
+1. Develop dialogue system
+   - NPC conversation trees
+   - Context-aware dialogue
+   - Player-choice impacts
+   - Integration with quest system
+   - Support for conditional dialogue options
+   - Dynamic conversation state
 
 ### Future Considerations
 1. Performance optimization for larger maps
@@ -298,6 +462,8 @@ StructureGenerator
 4. Advanced weather effects (visual/gameplay)
 5. Enhanced structure generation
 6. Expanded lighting effects (shadows, colored lighting)
+7. Economy system for item trading
+8. Advanced NPC AI behaviors
 
 ## Known Issues
 1. Terrain feature scaling could be more natural
