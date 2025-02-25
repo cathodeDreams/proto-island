@@ -2,6 +2,7 @@ import numpy as np
 from enum import Enum
 from dataclasses import dataclass
 from typing import Optional
+from proto_island.time import TimeSystem, WeatherCondition
 
 class LightSource(Enum):
     """Types of light sources in the game."""
@@ -43,9 +44,62 @@ class LightingSystem:
         
         # Current time of day
         self.time = TimeOfDay(hour=12, minute=0, base_intensity=1.0, color_temperature=5500.0)
+        
+        # Time system reference (will be set by GameMap)
+        self.time_system = None
+    
+    def set_time_system(self, time_system: TimeSystem) -> None:
+        """Set the time system reference.
+        
+        Args:
+            time_system: The time system to use
+        """
+        self.time_system = time_system
+        # Update time of day
+        self.time.hour = time_system.hour
+        self.time.minute = time_system.minute
     
     def update_natural_light(self) -> None:
         """Update natural lighting based on time of day."""
+        if self.time_system:
+            # Get factors from time system
+            daylight = self.time_system.get_daylight_factor()
+            moonlight = self.time_system.get_moon_illumination()
+            weather_mod = self.time_system.get_weather_light_modifier()
+            
+            # Combined natural light (max of sun or moon, adjusted for weather)
+            intensity = max(daylight, moonlight) * weather_mod
+            
+            # Add minimum ambient light, but allow moon phase differences to be noticeable
+            ambient_min = 0.1
+            if 18 <= self.time_system.hour or self.time_system.hour < 6:
+                # At night, use a lower minimum to allow moon phases to be visible
+                ambient_min = 0.05
+                
+            intensity = max(intensity, ambient_min)
+            
+            # Update natural light
+            self.natural_light.fill(intensity)
+            
+            # Update time object for other systems
+            self.time.hour = self.time_system.hour
+            self.time.minute = self.time_system.minute
+            self.time.base_intensity = intensity
+            
+            # Color temperature varies with time of day
+            hour = self.time_system.hour + self.time_system.minute / 60.0
+            if 6 <= hour < 12:  # Morning: warm to neutral
+                self.time.color_temperature = 3500 + (hour - 6) * 500
+            elif 12 <= hour < 18:  # Afternoon: neutral to warm
+                self.time.color_temperature = 5500 - (hour - 12) * 200
+            else:  # Night: cool
+                self.time.color_temperature = 2700
+        else:
+            # Fallback to old method if no time system
+            self._update_natural_light_legacy()
+    
+    def _update_natural_light_legacy(self) -> None:
+        """Legacy natural light calculation for backward compatibility."""
         # Calculate sun position and intensity
         hour = self.time.hour + self.time.minute / 60.0
         
@@ -80,11 +134,29 @@ class LightingSystem:
         
         # Other terrain types have lower reflectivity
         self.reflectivity[~(water_mask | beach_mask)] = 0.1
+        
+        # Modify reflectivity based on weather if time system is available
+        if self.time_system:
+            if self.time_system.weather_condition in [WeatherCondition.RAINY, WeatherCondition.STORMY]:
+                # Water surfaces become more reflective during rain
+                self.reflectivity[water_mask] = 0.9
+                # Ground surfaces have increased reflectivity from wetness
+                self.reflectivity[~water_mask] *= 1.3
+                np.clip(self.reflectivity, 0.0, 1.0, out=self.reflectivity)
+            elif self.time_system.weather_condition == WeatherCondition.FOGGY:
+                # Foggy conditions reduce contrast in reflectivity
+                self.reflectivity = 0.7 * self.reflectivity + 0.1
     
     def calculate_reflected_light(self) -> None:
         """Calculate reflected light based on surface properties and current lighting."""
         # Reflected light is based on natural light and surface reflectivity
         self.reflected_light = self.natural_light * self.reflectivity
+        
+        # Additional reflection effects based on weather
+        if self.time_system and self.time_system.weather_condition == WeatherCondition.FOGGY:
+            # Fog creates ambient light reflection
+            foggy_reflection = np.ones_like(self.reflected_light) * 0.1
+            self.reflected_light = np.maximum(self.reflected_light, foggy_reflection)
     
     def update(self) -> None:
         """Update the entire lighting system."""
@@ -92,7 +164,12 @@ class LightingSystem:
         self.calculate_reflected_light()
         
         # Combine natural light and a fraction of reflected light and artificial light additively
-        self.light_levels = self.natural_light + 0.3 * self.reflected_light + self.artificial_light
+        reflection_factor = 0.3
+        if self.time_system and self.time_system.weather_condition == WeatherCondition.STORMY:
+            # Enhanced reflections during storms (lightning effects)
+            reflection_factor = 0.5
+            
+        self.light_levels = self.natural_light + reflection_factor * self.reflected_light + self.artificial_light
         np.clip(self.light_levels, 0.0, 1.0, out=self.light_levels)
     
     def get_light_level(self, x: int, y: int) -> float:

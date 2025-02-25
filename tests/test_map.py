@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 import tcod
 from proto_island.map import GameMap, TerrainType
+from proto_island.time import WeatherCondition
 
 def test_map_initialization():
     """Test basic map initialization with correct dimensions and terrain types."""
@@ -110,11 +111,19 @@ def test_lighting_integration():
     # Test time changes affect lighting
     game_map.set_time(12, 0)  # Noon
     game_map.update_lighting()
-    assert game_map.get_light_level(50, 50) == 1.0  # Should be brightest
+    noon_light = game_map.get_light_level(50, 50)
+    assert noon_light > 0.9  # Should be very bright at noon
     
+    # Set to midnight with a full moon - should have some moonlight
     game_map.set_time(0, 0)  # Midnight
+    game_map.time_system.moon_phase = 0  # Full moon
+    game_map.time_system.weather_condition = WeatherCondition.CLEAR  # Clear weather
     game_map.update_lighting()
-    assert game_map.get_light_level(50, 50) == 0.1  # Should be moonlight level
+    midnight_light = game_map.get_light_level(50, 50)
+    
+    # Moonlight should be brighter than absolute darkness but dimmer than daylight
+    assert 0.05 < midnight_light < 0.5
+    assert noon_light > midnight_light  # Day should be brighter than night
 
 def test_terrain_lighting_interaction():
     """Test that different terrain types interact correctly with lighting."""

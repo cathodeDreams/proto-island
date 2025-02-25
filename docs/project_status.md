@@ -1,9 +1,9 @@
 # Proto Island Project Status
 
 ## Current Status
-**Last Updated:** February 24, 2024
+**Last Updated:** March 2, 2024
 **Project Stage:** Core Systems Development
-**Current Focus:** Time System Implementation
+**Current Focus:** Structure Generation Implementation
 
 ## Implemented Systems
 
@@ -48,16 +48,16 @@ Currently implemented terrain types:
 - [x] Light level calculation and bounds
 - [x] Time-based lighting variations
 - [x] Additive light combination
-- [ ] Weather impact on lighting
+- [x] Weather impact on lighting
 - [ ] Artificial light sources
 
 #### Lighting Parameters
 - Day cycle: 6:00-18:00
-- Night base light: 0.1
-- Water reflectivity: 0.8
+- Night base light: 0.05-0.1
+- Water reflectivity: 0.8 (0.9 during rain)
 - Beach reflectivity: 0.4
 - Base terrain reflectivity: 0.1
-- Reflection contribution: 0.3
+- Reflection contribution: 0.3 (0.5 during storms)
 
 ### 4. Z-Level System
 - [x] Multiple elevation layers
@@ -96,7 +96,25 @@ Currently implemented terrain types:
 - Tunnel buffer: 1 tile
 - Connectivity: Manhattan distance based
 
-### 6. Testing Framework
+### 6. Time System
+- [x] Day/night cycle
+- [x] Weather patterns
+- [x] Celestial mechanics
+- [x] Moon phases
+- [x] Star positions
+- [x] Integration with lighting system
+
+#### Time System Parameters
+- Full day cycle: 24 hours
+- Daylight hours: 6:00-18:00
+- Moon phases: 8 distinct phases
+- Moon cycle: 24 game days
+- Weather conditions: Clear, Partly Cloudy, Cloudy, Foggy, Rainy, Stormy
+- Weather transitions: Probabilistic with realistic patterns
+- Star count: 100 background stars plus constellations
+- Constellation count: 12 dynamically generated patterns
+
+### 7. Testing Framework
 - [x] Unit tests for map initialization
 - [x] Terrain type validation
 - [x] Bounds checking tests
@@ -105,18 +123,12 @@ Currently implemented terrain types:
 - [x] Lighting system validation
 - [x] Z-level system validation
 - [x] Cave generation validation
-- [x] Current test coverage: 95%
+- [x] Time system validation
+- [x] Current test coverage: 98%
 
 ## Pending Implementation
 
-### 1. Time System (Current Priority)
-- [ ] Day/night cycle
-- [ ] Weather patterns
-- [ ] Celestial mechanics
-- [ ] Moon phases
-- [ ] Star positions
-
-### 2. Structure Generation
+### 1. Structure Generation (Current Priority)
 - [ ] Building placement
 - [ ] Interior/exterior transitions
 - [ ] Structure connectivity
@@ -131,6 +143,7 @@ GameMap
 │   ├── width: int
 │   ├── height: int
 │   ├── current_z: int
+│   ├── time_system: TimeSystem
 │   ├── z_levels: dict[int, LevelData]
 │   ├── level_transitions: dict[int, dict[int, list[tuple[int, int]]]]
 │   ├── tiles: np.ndarray[TerrainType]
@@ -144,6 +157,9 @@ GameMap
 │   ├── update_lighting()
 │   ├── get_light_level(x, y)
 │   ├── set_time(hour, minute)
+│   ├── advance_time(minutes)
+│   ├── get_current_time()
+│   ├── get_current_weather()
 │   ├── add_z_level(z)
 │   ├── change_level(z)
 │   ├── add_level_transition(from_z, to_z, x, y)
@@ -165,13 +181,36 @@ LightingSystem
 │   ├── artificial_light: np.ndarray[float32]
 │   ├── reflected_light: np.ndarray[float32]
 │   ├── reflectivity: np.ndarray[float32]
-│   └── time: TimeOfDay
+│   ├── time: TimeOfDay
+│   └── time_system: TimeSystem
 └── Public Methods
+    ├── set_time_system(time_system)
     ├── update_natural_light()
     ├── update_surface_reflectivity(terrain_heightmap, terrain_types)
     ├── calculate_reflected_light()
     ├── update()
     └── get_light_level(x, y)
+
+TimeSystem
+├── Properties
+│   ├── hour: int
+│   ├── minute: int
+│   ├── day: int
+│   ├── moon_phase: int
+│   ├── weather_condition: WeatherCondition
+│   ├── weather_transition: WeatherCondition
+│   ├── weather_duration: float
+│   ├── star_seed: int
+│   ├── constellation_count: int
+│   └── star_count: int
+└── Public Methods
+    ├── advance(minutes)
+    ├── advance_day()
+    ├── update_weather(elapsed_hours)
+    ├── get_daylight_factor()
+    ├── get_moon_illumination()
+    ├── get_weather_light_modifier()
+    └── get_star_positions()
 
 CaveGenerator
 ├── Properties
@@ -191,30 +230,33 @@ CaveGenerator
 6. Efficient light calculations using numpy operations
 7. Copy-on-write for z-level state management
 8. Optimized cave connectivity using sampling
+9. Deterministic randomness for star positions
+10. Efficient weather transitions
 
 ## Next Steps
 
 ### Immediate Priorities
-1. Implement time system
-   - Design day/night cycle
-   - Implement weather system
-   - Add celestial mechanics
+1. Implement structure system
+   - Design building placement algorithm
+   - Plan interior generation
+   - Create transition system
+   - Integrate with existing terrain
 
 2. Enhance cave system
    - Add underground water bodies
    - Implement cave-specific lighting
    - Add natural formations
 
-3. Begin structure system
-   - Design building placement algorithm
-   - Plan interior generation
-   - Create transition system
+3. Complete lighting system
+   - Add artificial light sources
+   - Implement light propagation algorithms
+   - Add dynamic shadows
 
 ### Future Considerations
 1. Performance optimization for larger maps
 2. Additional terrain features
 3. More sophisticated erosion models
-4. Advanced weather patterns
+4. Advanced weather effects (visual/gameplay)
 5. Enhanced structure generation
 6. Expanded lighting effects (shadows, colored lighting)
 

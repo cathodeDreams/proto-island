@@ -4,6 +4,7 @@ from tcod import libtcodpy
 from tcod.noise import Noise
 from tcod.random import Random
 from .lighting import LightingSystem, TimeOfDay
+from .time import TimeSystem
 
 class TerrainType(Enum):
     """Enum representing different terrain types in the game."""
@@ -34,6 +35,9 @@ class GameMap:
         self.width = width
         self.height = height
         
+        # Create time system
+        self.time_system = TimeSystem()
+        
         # Z-level management
         self.current_z = 0
         self.z_levels = {0: {
@@ -41,6 +45,9 @@ class GameMap:
             'heightmap': np.zeros((height, width), dtype=np.float32),
             'lighting': LightingSystem(width, height)
         }}
+        
+        # Connect time system to lighting
+        self.z_levels[0]['lighting'].set_time_system(self.time_system)
         
         # Level transition storage
         self.level_transitions = {0: {}}  # {z_level: {target_z: [(x, y), ...]}}
@@ -51,19 +58,26 @@ class GameMap:
         self.lighting = self.z_levels[0]['lighting']
     
     def add_z_level(self, z: int) -> None:
-        """Add a new z-level to the map.
+        """Add a new Z-level to the game.
         
         Args:
-            z: The z-coordinate of the new level (positive = up, negative = down)
+            z: Z-level coordinate (negative = underground, positive = above ground)
         """
+        # Skip if level already exists
         if z in self.z_levels:
-            raise ValueError(f"Z-level {z} already exists")
-        
+            return
+            
+        # Create a new level
         self.z_levels[z] = {
             'tiles': np.full((self.height, self.width), TerrainType.GRASS, dtype=object),
             'heightmap': np.zeros((self.height, self.width), dtype=np.float32),
             'lighting': LightingSystem(self.width, self.height)
         }
+        
+        # Connect time system to lighting
+        self.z_levels[z]['lighting'].set_time_system(self.time_system)
+        
+        # Initialize empty transitions for this level
         self.level_transitions[z] = {}
     
     def change_level(self, z: int) -> None:
@@ -346,6 +360,8 @@ class GameMap:
     
     def update_lighting(self) -> None:
         """Update the lighting system for the current game state."""
+        # Update surface reflectivity before updating lighting
+        self.lighting.update_surface_reflectivity(self._heightmap, np.array([[t.value for t in row] for row in self.tiles]))
         self.lighting.update()
     
     def get_light_level(self, x: int, y: int) -> float:
@@ -367,12 +383,42 @@ class GameMap:
             hour: Hour of the day (0-23)
             minute: Minute of the hour (0-59)
         """
-        self.lighting.time = TimeOfDay(
-            hour=hour,
-            minute=minute,
-            base_intensity=1.0,
-            color_temperature=5500.0
-        )
+        # Update the time system
+        self.time_system.hour = hour
+        self.time_system.minute = minute
+        
+        # Update lighting for all z-levels
+        for z_level_data in self.z_levels.values():
+            z_level_data['lighting'].update()
+    
+    def advance_time(self, minutes: int) -> None:
+        """Advance time by the specified number of minutes.
+        
+        Args:
+            minutes: Minutes to advance
+        """
+        # Advance the time system
+        self.time_system.advance(minutes)
+        
+        # Update lighting for all z-levels
+        for z_level_data in self.z_levels.values():
+            z_level_data['lighting'].update()
+    
+    def get_current_time(self) -> tuple[int, int]:
+        """Get the current game time.
+        
+        Returns:
+            tuple: (hour, minute)
+        """
+        return (self.time_system.hour, self.time_system.minute)
+    
+    def get_current_weather(self) -> str:
+        """Get the current weather condition.
+        
+        Returns:
+            str: Weather condition name
+        """
+        return self.time_system.weather_condition.name
 
     def apply_cave_layout(self, cave_layout: np.ndarray) -> None:
         """Apply a cave layout to the current z-level.

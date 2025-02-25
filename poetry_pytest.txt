@@ -5,39 +5,63 @@ rootdir: /home/user/Dev/proto_island
 configfile: pyproject.toml
 testpaths: tests
 plugins: cov-6.0.0
-collecting ... collected 21 items
+collecting ... collected 44 items
 
-tests/test_cave.py::test_cave_generator_initialization PASSED            [  4%]
-tests/test_cave.py::test_cave_generation PASSED                          [  9%]
-tests/test_cave.py::test_cave_connectivity PASSED                        [ 14%]
-tests/test_cave.py::test_cave_integration PASSED                         [ 19%]
-tests/test_cave.py::test_cave_entrance_generation PASSED                 [ 23%]
-tests/test_lighting.py::test_lighting_system_initialization PASSED       [ 28%]
-tests/test_lighting.py::test_natural_light_day_cycle PASSED              [ 33%]
-tests/test_lighting.py::test_surface_reflectivity PASSED                 [ 38%]
-tests/test_lighting.py::test_light_level_bounds PASSED                   [ 42%]
-tests/test_lighting.py::test_get_light_level PASSED                      [ 47%]
-tests/test_map.py::test_map_initialization PASSED                        [ 52%]
-tests/test_map.py::test_terrain_types PASSED                             [ 57%]
-tests/test_map.py::test_map_bounds PASSED                                [ 61%]
-tests/test_map.py::test_terrain_generation PASSED                        [ 66%]
-tests/test_map.py::test_terrain_features PASSED                          [ 71%]
-tests/test_map.py::test_lighting_integration PASSED                      [ 76%]
-tests/test_map.py::test_terrain_lighting_interaction PASSED              [ 80%]
-tests/test_map.py::TestZLevels::test_z_level_initialization PASSED       [ 85%]
-tests/test_map.py::TestZLevels::test_z_level_navigation PASSED           [ 90%]
-tests/test_map.py::TestZLevels::test_z_level_state_persistence PASSED    [ 95%]
-tests/test_map.py::TestZLevels::test_z_level_connectivity PASSED         [100%]
+tests/test_cave.py::test_cave_generator_initialization PASSED            [  2%]
+tests/test_cave.py::test_cave_generation PASSED                          [  4%]
+tests/test_cave.py::test_cave_connectivity PASSED                        [  6%]
+tests/test_cave.py::test_cave_integration PASSED                         [  9%]
+tests/test_cave.py::test_cave_entrance_generation PASSED                 [ 11%]
+tests/test_lighting.py::test_lighting_system_initialization PASSED       [ 13%]
+tests/test_lighting.py::test_natural_light_day_cycle PASSED              [ 15%]
+tests/test_lighting.py::test_surface_reflectivity PASSED                 [ 18%]
+tests/test_lighting.py::test_light_level_bounds PASSED                   [ 20%]
+tests/test_lighting.py::test_get_light_level PASSED                      [ 22%]
+tests/test_map.py::test_map_initialization PASSED                        [ 25%]
+tests/test_map.py::test_terrain_types PASSED                             [ 27%]
+tests/test_map.py::test_map_bounds PASSED                                [ 29%]
+tests/test_map.py::test_terrain_generation PASSED                        [ 31%]
+tests/test_map.py::test_terrain_features PASSED                          [ 34%]
+tests/test_map.py::test_lighting_integration PASSED                      [ 36%]
+tests/test_map.py::test_terrain_lighting_interaction PASSED              [ 38%]
+tests/test_map.py::TestZLevels::test_z_level_initialization PASSED       [ 40%]
+tests/test_map.py::TestZLevels::test_z_level_navigation PASSED           [ 43%]
+tests/test_map.py::TestZLevels::test_z_level_state_persistence PASSED    [ 45%]
+tests/test_map.py::TestZLevels::test_z_level_connectivity PASSED         [ 47%]
+tests/test_time.py::test_time_system_initialization PASSED               [ 50%]
+tests/test_time.py::test_time_advancement PASSED                         [ 52%]
+tests/test_time.py::test_multi_day_advancement PASSED                    [ 54%]
+tests/test_time.py::test_daylight_factor PASSED                          [ 56%]
+tests/test_time.py::test_moon_illumination PASSED                        [ 59%]
+tests/test_time.py::test_weather_light_modifier PASSED                   [ 61%]
+tests/test_time.py::test_moon_phase_advancement PASSED                   [ 63%]
+tests/test_time.py::test_weather_transition PASSED                       [ 65%]
+tests/test_time.py::test_get_star_positions PASSED                       [ 68%]
+tests/test_time_coverage.py::test_weather_selection_with_controlled_randomness PASSED [ 70%]
+tests/test_time_coverage.py::test_weather_weights_for_all_conditions PASSED [ 72%]
+tests/test_time_coverage.py::test_specific_weather_transitions PASSED    [ 75%]
+tests/test_time_coverage.py::test_moon_illumination_at_exact_midnight PASSED [ 77%]
+tests/test_time_coverage.py::test_all_weather_light_modifiers PASSED     [ 79%]
+tests/test_time_coverage.py::test_star_positions_day_night PASSED        [ 81%]
+tests/test_time_coverage.py::test_star_positions_structure PASSED        [ 84%]
+tests/test_time_coverage.py::test_update_weather_transition PASSED       [ 86%]
+tests/test_time_integration.py::test_map_time_system_integration PASSED  [ 88%]
+tests/test_time_integration.py::test_set_time_updates_lighting PASSED    [ 90%]
+tests/test_time_integration.py::test_advance_time PASSED                 [ 93%]
+tests/test_time_integration.py::test_z_level_lighting_consistency PASSED [ 95%]
+tests/test_time_integration.py::test_weather_affects_lighting PASSED     [ 97%]
+tests/test_time_integration.py::test_moon_phase_affects_night_lighting PASSED [100%]
 
 ---------- coverage: platform linux, python 3.12.9-final-0 -----------
 Name                           Stmts   Miss  Cover
 --------------------------------------------------
 src/proto_island/__init__.py       0      0   100%
 src/proto_island/cave.py          80      2    98%
-src/proto_island/lighting.py      49      0   100%
-src/proto_island/map.py          172     13    92%
+src/proto_island/lighting.py      89      3    97%
+src/proto_island/map.py          188     14    93%
+src/proto_island/time.py         137      2    99%
 --------------------------------------------------
-TOTAL                            301     15    95%
+TOTAL                            494     21    96%
 
 
-============================= 21 passed in 11.53s ==============================
+============================= 44 passed in 11.58s ==============================
